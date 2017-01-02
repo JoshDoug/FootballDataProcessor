@@ -1,0 +1,174 @@
+/**
+ * Class for UI and user interaction.
+ * @author joshstringfellow
+ */
+package uk.ac.kingston.ci5100.football.a1.view;
+
+import java.awt.BorderLayout;
+import javax.swing.GroupLayout;
+import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.LayoutStyle;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+import uk.ac.kingston.ci5100.football.a1.model.ApplicationModel;
+
+public class ApplicationViewer extends JFrame {
+    
+    private JPanel teamPanel;
+    private JPanel matchPanel;
+    private JScrollBar teamScrollBar;
+    private JScrollBar matchScrollBar;
+    private JScrollPane teamScrollPane;
+    private JScrollPane matchScrollPane;
+    private JTabbedPane appTabbedPanel;
+    private JTable teamTable;
+    private JTable matchTable;
+    
+    public ApplicationViewer(ApplicationModel appModel){
+        JFrame appFrame = new JFrame();
+        appFrame.setLayout(new BorderLayout());
+        appTabbedPanel = new JTabbedPane();
+        teamPanel = new JPanel();
+        matchPanel = new JPanel();
+        teamScrollBar = new JScrollBar();
+        matchScrollBar = new JScrollBar();
+        teamScrollPane = new JScrollPane();
+        matchScrollPane = new JScrollPane();
+        
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        
+        DefaultTableModel teamTableModel = new DefaultTableModel(appModel.getTeamHeader(), 0);
+        DefaultTableModel matchTableModel = new DefaultTableModel(appModel.getMatchHeader(), 0);
+        
+        teamTable = new JTable(teamTableModel);
+        matchTable = new JTable(matchTableModel);
+        
+        for (int i = 0; i < appModel.teamArray.size(); i++) {
+            Object[] data = appModel.getTeamObject(appModel.teamArray.get(i));
+            teamTableModel.addRow(data);
+        }
+        
+        teamScrollPane.setViewportView(teamTable);
+        
+        GroupLayout teamPanelLayout = new GroupLayout(teamPanel);
+        teamPanel.setLayout(teamPanelLayout);
+        teamPanelLayout.setHorizontalGroup(
+            teamPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(teamPanelLayout.createSequentialGroup()
+                .addComponent(teamScrollPane, GroupLayout.PREFERRED_SIZE, 682, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(teamScrollBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+        teamPanelLayout.setVerticalGroup(
+            teamPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(teamScrollBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(teamScrollPane, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+        );
+        
+        appTabbedPanel.add("Teams", teamPanel);
+        
+        for (int i = 0; i < appModel.matchArray.size(); i++) {
+            Object[] data = appModel.getMatchObject(appModel.matchArray.get(i));
+            matchTableModel.addRow(data);
+        }
+        
+        matchScrollPane.setViewportView(matchTable);
+        
+        GroupLayout matchPanelLayout = new GroupLayout(matchPanel);
+        matchPanel.setLayout(matchPanelLayout);
+        matchPanelLayout.setHorizontalGroup(
+            matchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(matchPanelLayout.createSequentialGroup()
+                .addComponent(matchScrollPane, GroupLayout.PREFERRED_SIZE, 682, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(matchScrollBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+        matchPanelLayout.setVerticalGroup(
+            matchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(matchScrollBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(matchScrollPane, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+        );
+        
+        appTabbedPanel.add("Matches", matchPanel);
+        
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(appTabbedPanel)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(appTabbedPanel)
+        );
+        
+        this.setSize(900,600);
+        pack();
+        
+        
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NewJFrame().setVisible(true);
+            }
+        });
+    }
+    
+//    private JTabbedPane tabs = new JTabbedPane();
+//    private JTextArea teams = new JTextArea();
+//    private JTextArea matches = new JTextArea();
+//    private JScrollPane spane;
+//    
+//    public ApplicationViewer(ApplicationModel appModel){
+////        JFrame frame = new JFrame();
+////        frame.setLayout(new BorderLayout());
+//
+//        this.setLayout(new BorderLayout());
+//        this.setSize(900, 600);
+//        this.setTitle("Football Data Viewer");
+//        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        teams = new JTextArea(appModel.returnTeamsList());
+//        matches = new JTextArea(appModel.returnMatchList());
+//        
+//        //spane = new JScrollPane();
+//        
+//        //spane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//        
+//        tabs.add("Teams",teams);
+//        tabs.add("Matches",matches);
+//        
+////        this.add(new JScrollPane(teams));
+////        this.add(new JScrollPane(matches));
+//        
+//        this.add(tabs);
+//        this.setVisible(true); 
+//    }
+}

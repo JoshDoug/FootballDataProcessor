@@ -1,0 +1,7 @@
+# Football Data Processing Project .gitignore
+
+out
+.idea
+*.swp
+*.iml
+
